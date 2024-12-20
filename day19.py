@@ -49,9 +49,23 @@ def find_pattern(design, towel_patterns):
 
     return sub_sequence
 
+@cache
+def find_all_patterns(design, towel_patterns):
+    if len(design) == 0:
+        return 1
+
+    total = 0
+    for idx in range(len(design)):
+        towel = design[0:idx+1]
+        if towel in towel_patterns:
+            total += find_all_patterns(design[idx+1:], towel_patterns)
+
+    return total
+
 for design in designs:
     if find_pattern(design, tuple(towel_patterns)):
         star1 += 1
+    star2 += find_all_patterns(design, tuple(towel_patterns))
 
 print(f'star1: {star1}')
 print(f'star2: {star2}')
